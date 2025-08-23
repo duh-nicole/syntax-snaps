@@ -1,0 +1,23 @@
+The Great Quackulator Glow-Up! 🦆
+
+My little Grade Quackulator just got a major glow-up, and I couldn't be more excited! 
+What started as a simple app to calculate your grade is now a full-featured, super-smart, and extra-cute tool for students everywhere. 
+I've been busy adding some major features, so here's a quick look at what's new.
+
+Smarter Than Ever!
+This isn't just a simple calculator anymore! Before I got started, it was a simple tool of "total points earned divided by total points possible" calculations. 
+
+I've given it a major brain boost with two awesome new functions:
+
+    Weighted Grades: Now you can add a weight to each assignment. If your final exam is worth 40% of your grade, you can tell the Quackulator that, and it will give you a perfect, accurate result every time.
+    Grade-Goal Calculator: This is a game-changer! You can now ask the Quackulator what score you need on a future assignment to reach a target grade. It will look at your current progress and work backwards based on your target grade. Perfect for planning what you need on that final exam!
+
+
+A Splash of Color
+The app is now as pretty as it is smart. The percentage and the progress bar now change color to reflect your grade instantly. An A is a happy green, a C is a cautious yellow, and an F is a very-hard-to-miss red. 
+Plus, I've added a handy color legend to make it super easy for anyone to understand. While this is a nice touch, it is also a way to provide instant visual feedback, great for those who learn better visually. 
+
+A Little Memory Boost
+Have you ever closed a tab and lost all your work? Not anymore! The Quackulator now saves your grades automatically in your browser. You can close the tab, come back later, and all of your assignments will be right there, safe and sound. It now uses your computer's Local Storage as an tiny, dedicated notepad within your web browser! 
+
+I'm so proud of how far this little app has come. It's ready to help you quack the code to a perfect report card!
