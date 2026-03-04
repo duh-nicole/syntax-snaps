@@ -1,0 +1,42 @@
+💻 Hacking My Own Habits: Building a Frictionless Tracker with Bash  
+
+As part of my Behavior Modification final project, I decided to tackle a personal hurdle: consistent hydration. I’ve tried phone alarms and apps, but they were too easy to snooze and forget.
+
+I realized that while I might ignore my phone, I am at my computer at the same time every single weekday. I decided to meet my brain where it already is by building a simple, persistent automation tool.  
+
+The Problem: "The Friction of Tracking"
+Most habit trackers fail because the "energy to entry" is too high. If I have to unlock my phone, open an app, and find the right button, my ADHD brain has already moved on to a different thought. I needed something that:
+
+Found me (instead of me finding it).
+
+Took exactly one click to complete.
+
+Logged the data automatically for later evaluation.  
+
+The Solution: A Bash + Zenity Script
+I wrote a lightweight Bash script that triggers a GUI pop-up via Zenity the moment I log into my machine.
+
+  bash
+    
+  #!/bin/bash
+  
+  # This pops up a window with Yes/No buttons
+  if zenity --question --text="Did you drink your 16oz of water before your coffee today?"; 
+  then
+      # If you click Yes, it saves the date and 'Yes' to a log file
+      echo "$(date +%Y-%m-%d), Yes" >> ~/water_log.txt
+  else
+      # If you click No (or close the window), it saves 'No'
+      echo "$(date +%Y-%m-%d), No" >> ~/water_log.txt
+  fi
+
+
+Why This Works (for Me)
+Zero Friction: I don't have to "start" anything. The question is just there, waiting for a simple "Yes" or "No."
+
+Data Integrity: By formatting the output as a CSV-compatible string, I’m building a clean dataset I can analyze at the end of the quarter.
+
+Adaptability: The best part? It's "plug and play." Next month, I’m planning to pivot this script to track my morning medication intake—since my computer is a much more reliable "alarm" for me than my phone is!
+
+The Result
+On weekends, I still rely on my husband’s (much more advanced) human memory, but for the work week, this script has been my safety net. It’s a small bit of code, but it’s a big win for my personal data storytelling and health.
