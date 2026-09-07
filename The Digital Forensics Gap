@@ -1,0 +1,42 @@
+Syntax Snaps: The Digital Forensics Gap (Parser Bugs & OS Telemetry)
+
+When working in software, you know that raw database logs are not human intent, and that a parser's output is rarely source truth. When watching the legal proceedings of the Lindsay Clancy case, I noticed a few specific backend and OS mechanic inconsistencies that show just how easy it is to misintrepret raw telemetry if you don't understand how the underlying software works. It lead me to see three critical software level gaps in our modern digital forensics. 
+
+---
+
+1. Ingestion Errors: When Parsers Fabricate Frequency
+The Courtroom Claim: Search logs showed terms like "MiraLAX for kids" appearing repeatedly in reports with identical millisecond timestamps.
+
+The Engineering Reality: Cellebrite extracts raw SQLite databases directly from the OS. When a single HTTP query executes, the browser engine distributes that event across multiple system tables (history, cache, domain cookies, autocomplete_index).
+
+The Bug: When the ingestion tool flattens these disparate tables into a unified report, it can render a single web event as 5 to 10 duplicate rows. Without de-duplication or primary-key awareness, a parser error can easily be misconstrued as "frantic, repeated searching" when it was simply one SQL query mapped across multiple cache tables.
+
+[Raw SQLite Data]                 [Forensic Report]
+Browser Event 
+---> history                 ---> Row 1: "Miralax for kids" 12:00:00
+---> cache                   ---> Row 2: "Miralax for kids" 12:00:00
+---> cookies                 ---> Row 3: "Miralax for kids" 12:00:00
+---> autocomplete            ---> Row 4: "Miralax for kids" 12:00:00
+
+---
+
+2. State Overwrites vs. Delta Tracking
+**The courtroom claim:** An Apple Note had a typed text header dated *October 24*, but OS metadata logged a creation date of *October 25* and a last-modified date of *November 3*.
+
+The Engineering Reality: Apple Notes automatically pulls the first line of typed text as a display title—making the header an unvalidated string, not a verified system timestamp.
+
+The Architectural Limitation: Because SQLite updates a single row's last_modified Unix timestamp upon save, it overwrites the previous state. Without delta/diff tracking (similar to Git commit histories), the system cannot prove how many edits occurred or which specific lines were altered on November 3.
+
+---
+
+3. OS Lock-Screen Handlers & Biometric Fallbacks
+**The courtroom claim:** The device showed a "last full unlock" at 5:13 PM before locking at 5:15 PM, leaving subsequent activity ambiguous.
+
+The Engineering Reality: Modern mobile OS architectures isolate background tasks and lock-screen widgets from full user authentication. Actions like returning a call via lock-screen intent handlers execute within restricted background threads without triggering a biometric (UIKeyWindow) unlock event.
+
+Biometric Telemetry: Additionally, mobile operating systems automatically disable Face ID and force a passcode entry after specific conditions (such as multiple failed recognition attempts or system lockout triggers). Tracking the exact moment a device drops from biometrics to passcode input—alongside changes in input telemetry—provides crucial physical device context that top-level app logs completely miss.
+
+---
+
+The Takeaway for Developers
+Software does not exist in a vacuum, parser outputs are not source truth and database logs are not human intent. Whether building user-facing web apps in React or analyzing mobile device extractions, engineers must understand the difference between a raw system event, a parser's interpretation, and actual user interaction.
